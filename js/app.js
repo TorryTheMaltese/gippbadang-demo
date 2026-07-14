@@ -1,7 +1,7 @@
 import { initChat } from './chat.js';
 import { initDrive } from './drive.js';
 import { initClassroom } from './classroom.js';
-import { initPlugins } from './plugin.js';
+import { initPlugins } from './plugins.js';
 
 export const $ = (selector, root = document) => root.querySelector(selector);
 export const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
