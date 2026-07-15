@@ -637,4 +637,15 @@ export function initChat() {
   $$(".context-chips button").forEach((button) =>
     button.addEventListener("click", () => button.parentElement.remove()),
   );
+  $$(".suggestion-button").forEach((button) => {
+    button.addEventListener("click", () => {
+      const prompt = button.dataset.demoPrompt;
+      const input = $("#promptInput");
+
+      input.value = prompt;
+      input.focus();
+
+      sendPrompt();
+    });
+  });
 }

@@ -1235,6 +1235,60 @@ button {
   transform: translateX(-50%);
 }
 
+.prompt-suggestions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 2px 2px 9px;
+
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.prompt-suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+.suggestion-label {
+  flex: 0 0 auto;
+
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.suggestion-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.suggestion-button {
+  flex: 0 0 auto;
+
+  padding: 6px 9px;
+
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid #dcd7fb;
+  border-radius: 7px;
+
+  font-size: 9px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.suggestion-button:hover {
+  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.suggestion-button:active {
+  transform: translateY(1px);
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 230px minmax(0, 1fr);
@@ -1473,6 +1527,24 @@ button {
     left: 12px;
     width: auto;
     transform: none;
+  }
+
+  .prompt-suggestions {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 6px;
+
+    max-width: 100%;
+  }
+
+  .suggestion-buttons {
+    width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .suggestion-buttons::-webkit-scrollbar {
+    display: none;
   }
 
   .composer-footer {
