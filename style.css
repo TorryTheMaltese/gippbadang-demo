@@ -1092,6 +1092,114 @@ button {
   transform: none;
 }
 
+.quadratic-tool {
+  margin: 14px 0;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 4px 18px rgba(45, 55, 80, 0.05);
+}
+
+.quadratic-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.quadratic-heading span {
+  color: var(--primary);
+  font-size: 9px;
+  font-weight: 750;
+}
+
+.quadratic-heading h3 {
+  margin: 5px 0 0;
+  font-size: 18px;
+}
+
+.quadratic-layout {
+  display: grid;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 18px;
+}
+
+.quadratic-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.coefficient-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 7px;
+}
+
+.coefficient-label label {
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.coefficient-number {
+  width: 65px;
+  padding: 6px 7px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  outline: none;
+}
+
+.coefficient-number:focus {
+  border-color: var(--primary);
+}
+
+.coefficient-range {
+  width: 100%;
+  accent-color: var(--primary);
+}
+
+.quadratic-canvas-wrap {
+  min-width: 0;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.quadratic-canvas {
+  display: block;
+  width: 100%;
+}
+
+.graph-description {
+  color: var(--muted);
+  font-size: 11px !important;
+}
+
+.demo-query-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.demo-query-list button {
+  padding: 8px 11px;
+  color: var(--primary);
+  background: var(--primary-soft);
+  border: 1px solid #d9d4fa;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 230px minmax(0, 1fr);
@@ -1126,6 +1234,16 @@ button {
   }
   .plugin-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .quadratic-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .quadratic-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
   }
 }
 @media (max-width: 700px) {
@@ -1223,5 +1341,28 @@ button {
   }
   .message-actions {
     flex-wrap: wrap;
+  }
+  .quadratic-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .quadratic-controls {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+}
+
+@media (max-width: 430px) {
+  .quadratic-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .quadratic-tool {
+    padding: 13px;
+  }
+
+  .quadratic-heading {
+    align-items: flex-start;
   }
 }

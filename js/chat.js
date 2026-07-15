@@ -6,7 +6,7 @@ function privacyModal() {
   );
 }
 
-function appendDemoResponse() {
+function appendProblemResponse() {
   const conversation = $("#conversation");
 
   const article = document.createElement("article");
@@ -153,15 +153,418 @@ function appendDemoResponse() {
   }, 900);
 }
 
+function appendGraphResponse() {
+  const conversation = $("#conversation");
+  const article = document.createElement("article");
+
+  article.className = "message ai-message";
+
+  article.innerHTML = `
+    <div class="message-avatar">깊</div>
+
+    <div class="message-body">
+      <div class="message-meta">
+        <strong>깊바당 AI</strong>
+
+        <span class="model-chip">
+          ${$("#modelSelect").selectedOptions[0].text}
+        </span>
+
+        <time>지금</time>
+      </div>
+
+      <div class="typing">
+        <i></i>
+        <i></i>
+        <i></i>
+      </div>
+    </div>
+  `;
+
+  conversation.appendChild(article);
+
+  setTimeout(() => {
+    article.querySelector(".message-body").innerHTML = `
+      <div class="message-meta">
+        <strong>깊바당 AI</strong>
+
+        <span class="model-chip">
+          ${$("#modelSelect").selectedOptions[0].text}
+        </span>
+
+        <time>지금</time>
+      </div>
+
+      <p>
+        이차함수
+        <strong>y = ax² + bx + c</strong>의 계수를 조절하며
+        그래프의 변화를 확인해 보세요.
+      </p>
+
+      <div class="quadratic-tool">
+        <div class="quadratic-heading">
+          <div>
+            <span>INTERACTIVE GRAPH</span>
+            <h3 class="quadratic-equation">
+              y = x²
+            </h3>
+          </div>
+
+          <span class="status-badge">실시간 반영</span>
+        </div>
+
+        <div class="quadratic-layout">
+          <div class="quadratic-controls">
+            ${createCoefficientControl("a", 1)}
+            ${createCoefficientControl("b", 0)}
+            ${createCoefficientControl("c", 0)}
+          </div>
+
+          <div class="quadratic-canvas-wrap">
+            <canvas
+              class="quadratic-canvas"
+              aria-label="이차함수 그래프"
+            ></canvas>
+          </div>
+        </div>
+      </div>
+
+      <p class="graph-description">
+        슬라이더를 움직이거나 숫자를 직접 입력하면 그래프가
+        바로 변경됩니다.
+      </p>
+    `;
+
+    initializeQuadraticGraph(article);
+
+    article.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  }, 700);
+}
+
+function createCoefficientControl(name, value) {
+  return `
+    <div class="coefficient-control">
+      <div class="coefficient-label">
+        <label>
+          계수 ${name}
+        </label>
+
+        <input
+          class="coefficient-number"
+          data-coefficient="${name}"
+          data-input-type="number"
+          type="number"
+          min="-5"
+          max="5"
+          step="0.1"
+          value="${value}"
+          aria-label="계수 ${name} 숫자 입력"
+        >
+      </div>
+
+      <input
+        class="coefficient-range"
+        data-coefficient="${name}"
+        data-input-type="range"
+        type="range"
+        min="-5"
+        max="5"
+        step="0.1"
+        value="${value}"
+        aria-label="계수 ${name} 슬라이더"
+      >
+    </div>
+  `;
+}
+
+function initializeQuadraticGraph(article) {
+  const canvas = article.querySelector(".quadratic-canvas");
+  const equation = article.querySelector(".quadratic-equation");
+
+  const ranges = article.querySelectorAll(".coefficient-range");
+
+  const numbers = article.querySelectorAll(".coefficient-number");
+
+  const coefficients = {
+    a: 1,
+    b: 0,
+    c: 0,
+  };
+
+  function updateCoefficient(event) {
+    const input = event.target;
+    const name = input.dataset.coefficient;
+
+    let value = Number(input.value);
+
+    if (!Number.isFinite(value)) {
+      return;
+    }
+
+    value = Math.max(-5, Math.min(5, value));
+    coefficients[name] = value;
+
+    article.querySelectorAll(`[data-coefficient="${name}"]`).forEach((connectedInput) => {
+      if (connectedInput !== input) {
+        connectedInput.value = value;
+      }
+    });
+
+    equation.textContent = formatEquation(coefficients.a, coefficients.b, coefficients.c);
+
+    drawQuadraticGraph(canvas, coefficients);
+  }
+
+  ranges.forEach((input) => {
+    input.addEventListener("input", updateCoefficient);
+  });
+
+  numbers.forEach((input) => {
+    input.addEventListener("input", updateCoefficient);
+  });
+
+  const resizeObserver = new ResizeObserver(() => {
+    drawQuadraticGraph(canvas, coefficients);
+  });
+
+  resizeObserver.observe(canvas.parentElement);
+
+  equation.textContent = formatEquation(coefficients.a, coefficients.b, coefficients.c);
+
+  drawQuadraticGraph(canvas, coefficients);
+}
+
+function formatEquation(a, b, c) {
+  const formatNumber = (value) => {
+    if (Number.isInteger(value)) {
+      return String(value);
+    }
+
+    return value.toFixed(1);
+  };
+
+  let equation = "y = ";
+
+  if (a === 1) {
+    equation += "x²";
+  } else if (a === -1) {
+    equation += "−x²";
+  } else {
+    equation += `${formatNumber(a)}x²`;
+  }
+
+  if (b !== 0) {
+    const sign = b > 0 ? " + " : " − ";
+    const absolute = Math.abs(b);
+
+    equation += sign;
+
+    if (absolute === 1) {
+      equation += "x";
+    } else {
+      equation += `${formatNumber(absolute)}x`;
+    }
+  }
+
+  if (c !== 0) {
+    const sign = c > 0 ? " + " : " − ";
+
+    equation += `${sign}${formatNumber(Math.abs(c))}`;
+  }
+
+  return equation;
+}
+
+function drawQuadraticGraph(canvas, coefficients) {
+  const container = canvas.parentElement;
+  const width = Math.max(container.clientWidth, 280);
+  const height = Math.min(Math.max(width * 0.58, 260), 430);
+
+  const pixelRatio = window.devicePixelRatio || 1;
+
+  canvas.width = Math.round(width * pixelRatio);
+  canvas.height = Math.round(height * pixelRatio);
+
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  const context = canvas.getContext("2d");
+
+  context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+  context.clearRect(0, 0, width, height);
+
+  const xMin = -10;
+  const xMax = 10;
+  const yMin = -10;
+  const yMax = 10;
+
+  const toCanvasX = (x) => {
+    return ((x - xMin) / (xMax - xMin)) * width;
+  };
+
+  const toCanvasY = (y) => {
+    return height - ((y - yMin) / (yMax - yMin)) * height;
+  };
+
+  // 배경
+  context.fillStyle = "#ffffff";
+  context.fillRect(0, 0, width, height);
+
+  // 격자
+  context.lineWidth = 1;
+  context.strokeStyle = "#e8ebf2";
+
+  for (let x = xMin; x <= xMax; x += 1) {
+    const canvasX = toCanvasX(x);
+
+    context.beginPath();
+    context.moveTo(canvasX, 0);
+    context.lineTo(canvasX, height);
+    context.stroke();
+  }
+
+  for (let y = yMin; y <= yMax; y += 1) {
+    const canvasY = toCanvasY(y);
+
+    context.beginPath();
+    context.moveTo(0, canvasY);
+    context.lineTo(width, canvasY);
+    context.stroke();
+  }
+
+  // x축, y축
+  context.lineWidth = 1.5;
+  context.strokeStyle = "#667085";
+
+  context.beginPath();
+  context.moveTo(0, toCanvasY(0));
+  context.lineTo(width, toCanvasY(0));
+  context.stroke();
+
+  context.beginPath();
+  context.moveTo(toCanvasX(0), 0);
+  context.lineTo(toCanvasX(0), height);
+  context.stroke();
+
+  // 축 눈금 숫자
+  context.fillStyle = "#7b8495";
+  context.font = "10px sans-serif";
+
+  for (let x = xMin; x <= xMax; x += 2) {
+    if (x === 0) {
+      continue;
+    }
+
+    context.fillText(String(x), toCanvasX(x) - 5, toCanvasY(0) + 14);
+  }
+
+  for (let y = yMin; y <= yMax; y += 2) {
+    if (y === 0) {
+      continue;
+    }
+
+    context.fillText(String(y), toCanvasX(0) + 5, toCanvasY(y) + 3);
+  }
+
+  // 이차함수 곡선
+  context.beginPath();
+  context.lineWidth = 3;
+  context.strokeStyle = "#6656d9";
+  context.lineJoin = "round";
+
+  let curveStarted = false;
+
+  for (let pixelX = 0; pixelX <= width; pixelX += 1) {
+    const x = xMin + (pixelX / width) * (xMax - xMin);
+
+    const y = coefficients.a * x * x + coefficients.b * x + coefficients.c;
+
+    const canvasY = toCanvasY(y);
+
+    if (canvasY < -height || canvasY > height * 2) {
+      curveStarted = false;
+      continue;
+    }
+
+    if (!curveStarted) {
+      context.moveTo(pixelX, canvasY);
+      curveStarted = true;
+    } else {
+      context.lineTo(pixelX, canvasY);
+    }
+  }
+
+  context.stroke();
+
+  // 꼭짓점 표시
+  if (coefficients.a !== 0) {
+    const vertexX = -coefficients.b / (2 * coefficients.a);
+
+    const vertexY = coefficients.a * vertexX * vertexX + coefficients.b * vertexX + coefficients.c;
+
+    if (vertexX >= xMin && vertexX <= xMax && vertexY >= yMin && vertexY <= yMax) {
+      context.beginPath();
+      context.fillStyle = "#29b8b0";
+      context.arc(toCanvasX(vertexX), toCanvasY(vertexY), 5, 0, Math.PI * 2);
+      context.fill();
+    }
+  }
+}
+
+function appendUnsupportedResponse() {
+  const conversation = $("#conversation");
+  const article = document.createElement("article");
+
+  article.className = "message ai-message";
+
+  article.innerHTML = `
+    <div class="message-avatar">깊</div>
+
+    <div class="message-body">
+      <div class="message-meta">
+        <strong>깊바당 AI</strong>
+        <time>지금</time>
+      </div>
+
+      <p>
+        이 콘셉트 데모에서는 준비된 예시 질의를 입력해 주세요.
+      </p>
+
+      <div class="demo-query-list">
+        <button type="button">
+          2차 함수 문제를 만들어줘
+        </button>
+
+        <button type="button">
+          2차 함수 그래프 만들어줘
+        </button>
+      </div>
+    </div>
+  `;
+
+  conversation.appendChild(article);
+
+  article.querySelectorAll(".demo-query-list button").forEach((button) => {
+    button.addEventListener("click", () => {
+      $("#promptInput").value = button.textContent.trim();
+      $("#promptInput").focus();
+    });
+  });
+}
+
 function sendPrompt() {
   const input = $("#promptInput");
   const prompt = input.value.trim();
 
+  // 빈 입력값은 아무 반응도 하지 않음
   if (!prompt) {
     return;
   }
 
-  // 첫 질문이 입력되면 중앙 질의창을 하단으로 이동
   $("#chatView").classList.remove("empty-state");
 
   const article = document.createElement("article");
@@ -181,13 +584,22 @@ function sendPrompt() {
   `;
 
   article.querySelector("p").textContent = prompt;
-
   $("#conversation").appendChild(article);
 
   input.value = "";
   input.style.height = "auto";
 
-  appendDemoResponse();
+  if (prompt === "2차 함수 문제를 만들어줘") {
+    appendProblemResponse();
+    return;
+  }
+
+  if (prompt === "2차 함수 그래프 만들어줘") {
+    appendGraphResponse();
+    return;
+  }
+
+  appendUnsupportedResponse();
 }
 
 function distributionModal() {
