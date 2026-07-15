@@ -1,167 +1,208 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="깊바당 AI 교육 플랫폼 콘셉트 데모" />
-    <title>깊바당 | AI 교육 플랫폼</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="demo-banner">
-      <span>CONCEPT DEMO</span>
-      실제 AI 및 개인정보 처리 기능은 구현되지 않은 UI/UX 시연 화면입니다.
-    </div>
 
-    <div class="app-shell">
-      <header class="topbar">
-        <div class="brand-wrap">
-          <button class="icon-button mobile-only" id="mobileMenuButton" aria-label="메뉴 열기">☰</button>
-          <a class="brand" href="#" data-view="chat" aria-label="깊바당 홈">
-            <span class="brand-mark">깊</span>
-            <span><strong>깊바당</strong><small>AI Learning Workspace</small></span>
-          </a>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="깊바당 AI 교육 플랫폼 콘셉트 데모" />
+  <title>깊바당 | AI 교육 플랫폼</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div class="demo-banner">
+    <span>CONCEPT DEMO</span>
+    실제 AI 및 개인정보 처리 기능은 구현되지 않은 UI/UX 시연 화면입니다.
+  </div>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-wrap">
+        <button class="icon-button mobile-only" id="mobileMenuButton" aria-label="메뉴 열기">☰</button>
+        <a class="brand" href="#" data-view="chat" aria-label="깊바당 홈">
+          <span class="brand-mark">깊</span>
+          <span><strong>깊바당</strong><small>AI Learning Workspace</small></span>
+        </a>
+      </div>
+      <nav class="main-nav" aria-label="주 메뉴">
+        <button class="nav-item active" data-view="chat"><span>✦</span> AI 대화</button>
+        <button class="nav-item" data-view="classroom"><span>▣</span> 수업도구</button>
+        <button class="nav-item" data-view="plugins"><span>⬡</span> 플러그인</button>
+      </nav>
+      <div class="user-area">
+        <span class="sso-badge">바당 SSO</span>
+        <div class="avatar">교</div>
+        <div class="user-copy"><strong>김바당 선생님</strong><small>제주바당고등학교</small></div>
+        <button class="icon-button" aria-label="사용자 메뉴">⌄</button>
+      </div>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-heading">
+        <div><span class="eyebrow">MY SANDBOX</span>
+          <h2>내 드라이브</h2>
         </div>
-        <nav class="main-nav" aria-label="주 메뉴">
-          <button class="nav-item active" data-view="chat"><span>✦</span> AI 대화</button>
-          <button class="nav-item" data-view="classroom"><span>▣</span> 수업도구</button>
-          <button class="nav-item" data-view="plugins"><span>⬡</span> 플러그인</button>
-        </nav>
-        <div class="user-area">
-          <span class="sso-badge">바당 SSO</span>
-          <div class="avatar">교</div>
-          <div class="user-copy"><strong>김바당 선생님</strong><small>제주바당고등학교</small></div>
-          <button class="icon-button" aria-label="사용자 메뉴">⌄</button>
+        <button class="icon-button" id="addFileButton" title="새 항목">＋</button>
+      </div>
+      <div class="drive-actions">
+        <button id="uploadButton">↑ 업로드</button>
+        <button id="newFolderButton">＋ 새 폴더</button>
+      </div>
+      <div class="tree" id="fileTree" aria-label="파일 트리"></div>
+      <div class="storage-card">
+        <div><span>저장공간</span><strong>2.4 GB / 10 GB</strong></div>
+        <div class="storage-track"><i></i></div>
+        <small>학생 정보는 바당에서 자동으로 동기화됩니다.</small>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <section class="view active empty-state" id="chatView">
+        <div class="chat-header">
+          <div>
+            <span class="eyebrow">AI CHAT</span>
+            <h1>무엇을 함께 만들어 볼까요?</h1>
+            <p>학교 자료와 학급 정보를 찾아 수업에 바로 활용할 수 있도록 도와드려요.</p>
+          </div>
+          <div class="model-select-wrap">
+            <label for="modelSelect">사용 모델</label>
+            <select id="modelSelect">
+              <option value="chatgpt">ChatGPT 5</option>
+              <option value="gemini">Gemini 2.5 Pro</option>
+              <option value="claude">Claude Sonnet</option>
+              <option value="deepbadang">깊바당 교육 특화 AI</option>
+            </select>
+          </div>
         </div>
-      </header>
 
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-heading">
-          <div><span class="eyebrow">MY SANDBOX</span><h2>내 드라이브</h2></div>
-          <button class="icon-button" id="addFileButton" title="새 항목">＋</button>
+        <div class="privacy-strip" id="privacyStrip">
+          <span class="shield">✓</span>
+          <div><strong>개인정보 보호 모드 작동 중</strong><small>모든 질의와 첨부파일은 개인정보 식별·마스킹 후 선택한 AI로 전송됩니다.</small></div>
+          <button id="privacyDetailButton">처리 과정 보기 →</button>
         </div>
-        <div class="drive-actions">
-          <button id="uploadButton">↑ 업로드</button>
-          <button id="newFolderButton">＋ 새 폴더</button>
+
+        <div class="conversation" id="conversation" aria-live="polite"></div>
+
+        <div class="composer-wrap">
+          <div class="context-chips" id="contextChips">
+            <span>▣ 1학년 1반 <button aria-label="제거">×</button></span>
+            <span>▤ 이차함수 수업자료.pdf <button aria-label="제거">×</button></span>
+          </div>
+          <div class="composer">
+            <button class="attach-button" id="attachButton" aria-label="자료 첨부">＋</button>
+            <textarea id="promptInput" rows="1" placeholder="깊바당에게 질문하세요"></textarea>
+            <button class="send-button" id="sendButton" aria-label="질문 보내기">↑</button>
+          </div>
+          <div class="composer-footer"><span>연결 자료 <strong>2개</strong></span><span>AI 결과는 부정확할 수 있으니 중요한 내용은 확인해
+              주세요.</span><span class="masking-on">● 개인정보 자동 마스킹</span></div>
         </div>
-        <div class="tree" id="fileTree" aria-label="파일 트리"></div>
-        <div class="storage-card">
-          <div><span>저장공간</span><strong>2.4 GB / 10 GB</strong></div>
-          <div class="storage-track"><i></i></div>
-          <small>학생 정보는 바당에서 자동으로 동기화됩니다.</small>
-        </div>
-      </aside>
-
-      <main class="workspace">
-        <section class="view active" id="chatView">
-          <div class="chat-header">
-            <div>
-              <span class="eyebrow">AI CHAT</span>
-              <h1>무엇을 함께 만들어 볼까요?</h1>
-              <p>학교 자료와 학급 정보를 찾아 수업에 바로 활용할 수 있도록 도와드려요.</p>
-            </div>
-            <div class="model-select-wrap">
-              <label for="modelSelect">사용 모델</label>
-              <select id="modelSelect">
-                <option value="chatgpt">ChatGPT 5</option>
-                <option value="gemini">Gemini 2.5 Pro</option>
-                <option value="claude">Claude Sonnet</option>
-                <option value="deepbadang">깊바당 교육 특화 AI</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="privacy-strip" id="privacyStrip">
-            <span class="shield">✓</span>
-            <div><strong>개인정보 보호 모드 작동 중</strong><small>모든 질의와 첨부파일은 개인정보 식별·마스킹 후 선택한 AI로 전송됩니다.</small></div>
-            <button id="privacyDetailButton">처리 과정 보기 →</button>
-          </div>
-
-          <div class="conversation" id="conversation" aria-live="polite">
-            <article class="message user-message">
-              <div class="message-avatar">나</div>
-              <div class="message-body">
-                <div class="message-meta"><strong>김바당 선생님</strong><time>오후 2:31</time></div>
-                <p>2차 함수 문제를 만들어줘</p>
-              </div>
-            </article>
-            <article class="message ai-message">
-              <div class="message-avatar">깊</div>
-              <div class="message-body">
-                <div class="message-meta"><strong>깊바당 AI</strong><span class="model-chip">ChatGPT 5</span><time>오후 2:31</time></div>
-                <div class="context-note">◉ <strong>참조한 자료</strong>　1학년 1반 학습현황 · 수학 진도계획 · 이차함수 수업자료.pdf</div>
-                <p>1학년 1반의 현재 진도와 학생별 학습 수준을 반영해 <strong>이차함수 형성평가 5문항</strong>을 만들었어요.</p>
-                <div class="generated-card">
-                  <div class="generated-head"><div><span>수학 · 고1</span><h3>이차함수의 그래프와 성질</h3></div><span class="status-badge">5문항</span></div>
-                  <ol class="question-preview">
-                    <li><span>기본</span> 이차함수 <i>y = 2x²</i>의 그래프에 대한 설명으로 옳은 것은?</li>
-                    <li><span>기본</span> 함수 <i>y = −x² + 4</i>의 꼭짓점 좌표를 구하세요.</li>
-                    <li><span class="medium">응용</span> 그래프가 점 (2, 8)을 지날 때, <i>y = ax²</i>의 <i>a</i> 값을 구하세요.</li>
-                  </ol>
-                  <button class="text-button" id="expandQuestions">나머지 2문항 보기⌄</button>
-                </div>
-                <p>학생들에게 바로 배포하거나, 난이도와 문항 수를 조정할 수 있어요.</p>
-                <div class="message-actions">
-                  <button class="primary-button" id="sendToClassButton">▣ 1학년 1반에 배포</button>
-                  <button class="secondary-button" id="editQuestionButton">✎ 문제 편집</button>
-                  <button class="icon-button" title="복사">▢</button>
-                </div>
-              </div>
-            </article>
-          </div>
-
-          <div class="composer-wrap">
-            <div class="context-chips" id="contextChips">
-              <span>▣ 1학년 1반 <button aria-label="제거">×</button></span>
-              <span>▤ 이차함수 수업자료.pdf <button aria-label="제거">×</button></span>
-            </div>
-            <div class="composer">
-              <button class="attach-button" id="attachButton" aria-label="자료 첨부">＋</button>
-              <textarea id="promptInput" rows="1" placeholder="깊바당에게 질문하세요"></textarea>
-              <button class="send-button" id="sendButton" aria-label="질문 보내기">↑</button>
-            </div>
-            <div class="composer-footer"><span>연결 자료 <strong>2개</strong></span><span>AI 결과는 부정확할 수 있으니 중요한 내용은 확인해 주세요.</span><span class="masking-on">● 개인정보 자동 마스킹</span></div>
-          </div>
-        </section>
-
-        <section class="view" id="classroomView">
-          <div class="page-heading"><div><span class="eyebrow">CLASSROOM TOOLS</span><h1>수업도구</h1><p>문제를 제작·배포하고 학생별 응답과 질문을 한눈에 확인하세요.</p></div><button class="primary-button" id="createLessonButton">＋ 새 활동 만들기</button></div>
-          <div class="stat-grid">
-            <article><span>진행 중인 활동</span><strong>1</strong><small>이차함수 형성평가</small></article>
-            <article><span>제출 현황</span><strong>2 / 3</strong><small>학생 1명 풀이 중</small></article>
-            <article><span>학생 질문</span><strong>4</strong><small class="accent">미확인 질문 2개</small></article>
-            <article><span>평균 정답률</span><strong>72%</strong><small>직전 활동 대비 +8%</small></article>
-          </div>
-          <article class="panel activity-panel">
-            <div class="panel-head"><div><span class="live-dot">● 진행 중</span><h2>이차함수의 그래프와 성질</h2><p>1학년 1반 · 5문항 · 오늘 오후 2:35 배포</p></div><button class="secondary-button">활동 관리</button></div>
-            <div class="student-table-wrap"><table class="student-table"><thead><tr><th>학생</th><th>진행 상태</th><th>정답</th><th>최근 질문</th><th>지원 필요</th></tr></thead><tbody>
-              <tr><td><strong>1번 김에이</strong></td><td><span class="pill success">제출 완료</span></td><td>4 / 5</td><td>“꼭짓점은 어떻게 찾나요?”</td><td><span class="pill">보통</span></td></tr>
-              <tr><td><strong>2번 이비</strong></td><td><span class="pill warning">풀이 중</span></td><td>2 / 4</td><td>“a가 음수면 왜 아래로 볼록해요?”</td><td><span class="pill danger">확인 필요</span></td></tr>
-              <tr><td><strong>3번 박시</strong></td><td><span class="pill success">제출 완료</span></td><td>5 / 5</td><td>질문 없음</td><td><span class="pill success">양호</span></td></tr>
-            </tbody></table></div>
-          </article>
-        </section>
-
-        <section class="view" id="pluginsView">
-          <div class="page-heading"><div><span class="eyebrow">PLUGIN HUB</span><h1>플러그인</h1><p>반복 업무를 나만의 AI 도구로 만들고 동료 교사와 공유하세요.</p></div><button class="primary-button" id="createPluginButton">✦ AI로 플러그인 만들기</button></div>
-          <div class="plugin-tabs"><button class="active" data-plugin-filter="all">전체</button><button data-plugin-filter="installed">내 플러그인</button><button data-plugin-filter="official">공식</button><button data-plugin-filter="shared">교사 공유</button></div>
-          <div class="plugin-grid" id="pluginGrid">
-            <article class="plugin-card" data-category="installed"><div class="plugin-icon purple">평</div><span class="installed-badge">설치됨</span><h2>서술형 평가도우미</h2><p>평가기준에 따라 학생 답안을 분석하고 맞춤형 피드백 초안을 생성합니다.</p><div class="plugin-meta"><span>제작: 나</span><span>★ 4.9</span></div><button class="secondary-button plugin-action" data-installed="true">삭제</button></article>
-            <article class="plugin-card" data-category="official"><div class="plugin-icon blue">가</div><span class="official-badge">깊바당 공식</span><h2>가정통신문 작성기</h2><p>교육청 서식과 학교 일정을 반영해 가정통신문 초안을 작성합니다.</p><div class="plugin-meta"><span>사용 8,421회</span><span>★ 4.8</span></div><button class="primary-button plugin-action" data-installed="false">설치</button></article>
-            <article class="plugin-card" data-category="shared"><div class="plugin-icon green">수</div><span class="share-badge">교사 공유</span><h2>수준별 문제 변형기</h2><p>기존 문항을 학생 수준에 맞춰 기본·응용·도전 문항으로 변형합니다.</p><div class="plugin-meta"><span>제작: 제주수학교사모임</span><span>★ 4.7</span></div><button class="primary-button plugin-action" data-installed="false">설치</button></article>
-          </div>
-        </section>
-      </main>
-    </div>
-
-    <div class="modal-backdrop" id="modalBackdrop" hidden>
-      <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-        <button class="modal-close" id="modalClose" aria-label="닫기">×</button>
-        <div id="modalContent"></div>
       </section>
-    </div>
-    <div class="toast" id="toast" role="status"></div>
 
-    <script type="module" src="js/app.js"></script>
-  </body>
+      <section class="view" id="classroomView">
+        <div class="page-heading">
+          <div><span class="eyebrow">CLASSROOM TOOLS</span>
+            <h1>수업도구</h1>
+            <p>문제를 제작·배포하고 학생별 응답과 질문을 한눈에 확인하세요.</p>
+          </div><button class="primary-button" id="createLessonButton">＋ 새 활동 만들기</button>
+        </div>
+        <div class="stat-grid">
+          <article><span>진행 중인 활동</span><strong>1</strong><small>이차함수 형성평가</small></article>
+          <article><span>제출 현황</span><strong>2 / 3</strong><small>학생 1명 풀이 중</small></article>
+          <article><span>학생 질문</span><strong>4</strong><small class="accent">미확인 질문 2개</small></article>
+          <article><span>평균 정답률</span><strong>72%</strong><small>직전 활동 대비 +8%</small></article>
+        </div>
+        <article class="panel activity-panel">
+          <div class="panel-head">
+            <div><span class="live-dot">● 진행 중</span>
+              <h2>이차함수의 그래프와 성질</h2>
+              <p>1학년 1반 · 5문항 · 오늘 오후 2:35 배포</p>
+            </div><button class="secondary-button">활동 관리</button>
+          </div>
+          <div class="student-table-wrap">
+            <table class="student-table">
+              <thead>
+                <tr>
+                  <th>학생</th>
+                  <th>진행 상태</th>
+                  <th>정답</th>
+                  <th>최근 질문</th>
+                  <th>지원 필요</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1번 김에이</strong></td>
+                  <td><span class="pill success">제출 완료</span></td>
+                  <td>4 / 5</td>
+                  <td>“꼭짓점은 어떻게 찾나요?”</td>
+                  <td><span class="pill">보통</span></td>
+                </tr>
+                <tr>
+                  <td><strong>2번 이비</strong></td>
+                  <td><span class="pill warning">풀이 중</span></td>
+                  <td>2 / 4</td>
+                  <td>“a가 음수면 왜 아래로 볼록해요?”</td>
+                  <td><span class="pill danger">확인 필요</span></td>
+                </tr>
+                <tr>
+                  <td><strong>3번 박시</strong></td>
+                  <td><span class="pill success">제출 완료</span></td>
+                  <td>5 / 5</td>
+                  <td>질문 없음</td>
+                  <td><span class="pill success">양호</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+
+      <section class="view" id="pluginsView">
+        <div class="page-heading">
+          <div><span class="eyebrow">PLUGIN HUB</span>
+            <h1>플러그인</h1>
+            <p>반복 업무를 나만의 AI 도구로 만들고 동료 교사와 공유하세요.</p>
+          </div><button class="primary-button" id="createPluginButton">✦ AI로 플러그인 만들기</button>
+        </div>
+        <div class="plugin-tabs"><button class="active" data-plugin-filter="all">전체</button><button
+            data-plugin-filter="installed">내 플러그인</button><button data-plugin-filter="official">공식</button><button
+            data-plugin-filter="shared">교사 공유</button></div>
+        <div class="plugin-grid" id="pluginGrid">
+          <article class="plugin-card" data-category="installed">
+            <div class="plugin-icon purple">평</div><span class="installed-badge">설치됨</span>
+            <h2>서술형 평가도우미</h2>
+            <p>평가기준에 따라 학생 답안을 분석하고 맞춤형 피드백 초안을 생성합니다.</p>
+            <div class="plugin-meta"><span>제작: 나</span><span>★ 4.9</span></div><button
+              class="secondary-button plugin-action" data-installed="true">삭제</button>
+          </article>
+          <article class="plugin-card" data-category="official">
+            <div class="plugin-icon blue">가</div><span class="official-badge">깊바당 공식</span>
+            <h2>가정통신문 작성기</h2>
+            <p>교육청 서식과 학교 일정을 반영해 가정통신문 초안을 작성합니다.</p>
+            <div class="plugin-meta"><span>사용 8,421회</span><span>★ 4.8</span></div><button
+              class="primary-button plugin-action" data-installed="false">설치</button>
+          </article>
+          <article class="plugin-card" data-category="shared">
+            <div class="plugin-icon green">수</div><span class="share-badge">교사 공유</span>
+            <h2>수준별 문제 변형기</h2>
+            <p>기존 문항을 학생 수준에 맞춰 기본·응용·도전 문항으로 변형합니다.</p>
+            <div class="plugin-meta"><span>제작: 제주수학교사모임</span><span>★ 4.7</span></div><button
+              class="primary-button plugin-action" data-installed="false">설치</button>
+          </article>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-backdrop" id="modalBackdrop" hidden>
+    <section class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal-close" id="modalClose" aria-label="닫기">×</button>
+      <div id="modalContent"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
 </html>
