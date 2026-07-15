@@ -1270,9 +1270,68 @@ button {
     display: block;
     margin-right: 4px;
   }
-  .brand small,
-  .main-nav {
+  .brand small {
     display: none;
+  }
+  .main-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    align-items: stretch;
+
+    height: 64px;
+    padding-bottom: env(safe-area-inset-bottom);
+
+    background: #ffffff;
+    border-top: 1px solid var(--line);
+    box-shadow: 0 -5px 20px rgba(35, 43, 67, 0.08);
+
+    z-index: 15;
+  }
+
+  .nav-item {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 0;
+    padding: 7px 4px;
+
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  .nav-item span {
+    margin-right: 0;
+    font-size: 17px;
+  }
+
+  .nav-item.active::after {
+    top: 0;
+    right: 25%;
+    bottom: auto;
+    left: 25%;
+
+    height: 3px;
+
+    border-radius: 0 0 4px 4px;
+  }
+
+  .view {
+    padding-bottom: 90px;
+  }
+
+  #chatView {
+    padding-bottom: 250px;
+  }
+
+  .sidebar {
+    bottom: 64px;
   }
   .sidebar {
     position: fixed;
@@ -1314,7 +1373,7 @@ button {
   }
   .composer-wrap {
     right: 12px;
-    bottom: 12px;
+    bottom: 76px;
     left: 12px;
   }
   #chatView.empty-state .composer-wrap {
@@ -1328,7 +1387,7 @@ button {
   #chatView:not(.empty-state) .composer-wrap {
     top: auto;
     right: 12px;
-    bottom: 12px;
+    bottom: 76px;
     left: 12px;
     transform: none;
   }
