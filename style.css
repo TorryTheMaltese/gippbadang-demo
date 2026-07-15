@@ -1200,6 +1200,41 @@ button {
   font-weight: 700;
 }
 
+/* ========================================
+   채팅 입력창 반응형 위치 보정
+======================================== */
+
+/* 일반 PC: 사이드바 280px */
+.composer-wrap {
+  right: auto;
+  left: calc(280px + ((100vw - 280px) / 2));
+
+  width: min(900px, calc(100vw - 280px - 80px));
+
+  max-width: none;
+  margin: 0;
+
+  transform: translateX(-50%);
+}
+
+/* 첫 질의 전: 채팅 영역 중앙 */
+#chatView.empty-state .composer-wrap {
+  top: 50%;
+  right: auto;
+  bottom: auto;
+
+  transform: translate(-50%, -50%);
+}
+
+/* 대화 시작 후: 채팅 영역 하단 */
+#chatView:not(.empty-state) .composer-wrap {
+  top: auto;
+  right: auto;
+  bottom: 22px;
+
+  transform: translateX(-50%);
+}
+
 @media (max-width: 900px) {
   .app-shell {
     grid-template-columns: 230px minmax(0, 1fr);
@@ -1246,6 +1281,24 @@ button {
     gap: 10px;
   }
 }
+
+/* 태블릿: 사이드바 230px */
+@media (min-width: 701px) and (max-width: 900px) {
+  .composer-wrap {
+    left: calc(230px + ((100vw - 230px) / 2));
+
+    width: calc(100vw - 230px - 48px);
+  }
+
+  #chatView.empty-state .composer-wrap {
+    transform: translate(-50%, -50%);
+  }
+
+  #chatView:not(.empty-state) .composer-wrap {
+    transform: translateX(-50%);
+  }
+}
+
 @media (max-width: 700px) {
   .demo-banner {
     padding: 0 8px;
@@ -1371,29 +1424,7 @@ button {
   .user-message .message-body {
     max-width: 88%;
   }
-  .composer-wrap {
-    right: 12px;
-    bottom: 76px;
-    left: 12px;
-  }
-  #chatView.empty-state .composer-wrap {
-    top: 48%;
-    right: 16px;
-    bottom: auto;
-    left: 16px;
-    transform: translateY(-50%);
-  }
 
-  #chatView:not(.empty-state) .composer-wrap {
-    top: auto;
-    right: 12px;
-    bottom: 76px;
-    left: 12px;
-    transform: none;
-  }
-  .composer-footer span:nth-child(2) {
-    display: none;
-  }
   .stat-grid,
   .plugin-grid {
     grid-template-columns: 1fr;
@@ -1410,6 +1441,52 @@ button {
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
   }
+
+  .composer-wrap {
+    right: 12px;
+    left: 12px;
+
+    width: auto;
+    max-width: none;
+    margin: 0;
+
+    transform: none;
+  }
+
+  /* 첫 질문 전에는 화면 중앙 */
+  #chatView.empty-state .composer-wrap {
+    top: 48%;
+    right: 16px;
+    bottom: auto;
+    left: 16px;
+
+    width: auto;
+
+    transform: translateY(-50%);
+  }
+
+  /* 대화 후에는 하단 메뉴 위 */
+  #chatView:not(.empty-state) .composer-wrap {
+    top: auto;
+    right: 12px;
+    bottom: 76px;
+    left: 12px;
+    width: auto;
+    transform: none;
+  }
+
+  .composer-footer {
+    gap: 8px;
+  }
+
+  .composer-footer span:nth-child(2) {
+    display: none;
+  }
+
+  .context-chips {
+    max-height: 65px;
+    overflow-y: auto;
+  }
 }
 
 @media (max-width: 430px) {
@@ -1423,5 +1500,35 @@ button {
 
   .quadratic-heading {
     align-items: flex-start;
+  }
+
+  .composer-wrap {
+    padding: 8px 10px 7px;
+    border-radius: 13px;
+  }
+
+  .composer {
+    gap: 5px;
+  }
+
+  .composer textarea {
+    min-width: 0;
+    padding: 9px 2px;
+    font-size: 12px;
+  }
+
+  .attach-button,
+  .send-button {
+    flex-basis: 32px;
+    width: 32px;
+    height: 32px;
+  }
+
+  .composer-footer {
+    justify-content: flex-end;
+  }
+
+  .composer-footer > span:first-child {
+    display: none;
   }
 }
