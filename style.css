@@ -13,6 +13,8 @@
   --warning: #a76508;
   --danger: #c24155;
   --shadow: 0 12px 36px rgba(35, 43, 67, 0.09);
+  --sidebar-width: 280px;
+  --composer-gap: clamp(24px, 4vw, 64px);
 }
 
 * {
@@ -591,11 +593,16 @@ button {
 }
 .composer-wrap {
   position: fixed;
-  right: clamp(24px, 4vw, 64px);
+
+  /* 사이드바를 제외한 영역의 정중앙 */
+  left: calc(var(--sidebar-width) + (100vw - var(--sidebar-width)) / 2);
   bottom: 22px;
-  left: calc(280px + clamp(24px, 4vw, 64px));
-  max-width: 900px;
-  margin: auto;
+  transform: translateX(-50%);
+
+  /* 화면이 작아지면 자동으로 너비 축소 */
+  width: min(900px, calc(100vw - var(--sidebar-width) - var(--composer-gap) * 2));
+
+  margin: 0;
   padding: 10px 13px 8px;
   background: #fff;
   border: 1px solid #dfe3ea;
@@ -1290,6 +1297,10 @@ button {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --sidebar-width: 230px;
+    --composer-gap: 24px;
+  }
   .app-shell {
     grid-template-columns: 230px minmax(0, 1fr);
   }
@@ -1299,9 +1310,6 @@ button {
   .user-copy,
   .sso-badge {
     display: none;
-  }
-  .composer-wrap {
-    left: calc(230px + 24px);
   }
   #chatView.empty-state .composer-wrap {
     top: 48%;
@@ -1434,7 +1442,7 @@ button {
   }
 
   #chatView {
-    padding-bottom: 250px;
+    padding-bottom: 170px;
   }
 
   .sidebar {
@@ -1497,14 +1505,10 @@ button {
   }
 
   .composer-wrap {
-    right: 12px;
-    left: 12px;
-
-    width: auto;
-    max-width: none;
-    margin: 0;
-
-    transform: none;
+    left: 50%;
+    bottom: 12px;
+    width: calc(100vw - 24px);
+    transform: translateX(-50%);
   }
 
   /* 첫 질문 전에는 화면 중앙 */
